@@ -2,7 +2,16 @@ import pandas as pd
 import re
 
 
-def calculate_credits_pandas(message_texts):
+def calculate_credits_pandas(message_texts: list[str]) -> list[float]:
+    """
+    Calculate the credit cost for each message in the list.
+
+    Args:
+        message_texts (list[str]): A list of message strings to process.
+
+    Returns:
+        list[float]: A list of total credit costs for each message.
+    """
     df = pd.DataFrame({'message_text': message_texts})
 
     # Base Cost: 1 credit per message
@@ -39,7 +48,17 @@ def calculate_credits_pandas(message_texts):
     return df['total_cost'].tolist()
 
 
-def calculate_credits_batch_pandas(messages, batch_size=100):
+def calculate_credits_batch_pandas(messages: list[str], batch_size: int = 100) -> list[float]:
+    """
+    Calculate the credit costs for a batch of messages.
+
+    Args:
+        messages (list[str]): A list of message strings to process.
+        batch_size (int, optional): The number of messages to process in each batch. Defaults to 100.
+
+    Returns:
+        list[float]: A list of total credit costs for each message in the batch.
+    """
     results = []
     for i in range(0, len(messages), batch_size):
         batch = messages[i:i + batch_size]

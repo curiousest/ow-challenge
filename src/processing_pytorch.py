@@ -3,7 +3,16 @@ import re
 import concurrent.futures
 
 
-def calculate_credits_pytorch(messages):
+def calculate_credits_pytorch(messages: list[str]) -> list[float]:
+    """
+    Calculate the credit cost for each message
+
+    Args:
+        messages (list of str): A list of messages for which credits need to be calculated.
+
+    Returns:
+        list of float: A list of calculated credits for each message, rounded to two decimal places.
+    """
     # Base Cost: 1 credit per message
     base_cost = torch.ones(len(messages))
 
@@ -52,11 +61,25 @@ def calculate_credits_pytorch(messages):
     is_palindrome = torch.tensor([1.0 if text == text[::-1] else 0.0 for text in cleaned_texts], dtype=torch.float32)
     total_cost *= (1 + is_palindrome)
 
-    return total_cost.tolist()
+    return [round(cost, 2) for cost in total_cost.tolist()]
 
 
 
-def calculate_credits_batch_pytorch(messages, batch_size=100):
+def calculate_credits_batch_pytorch(messages: list[str], batch_size: int = 100) -> list[float]:
+    """
+    Calculate credits for a batch of messages using PyTorch.
+
+    This function processes messages in batches to efficiently calculate
+    the credits for each message. It utilizes a thread pool to parallelize
+    the computation across multiple batches.
+
+    Args:
+        messages (list of str): A list of messages for which credits need to be calculated.
+        batch_size (int, optional): The number of messages to process in each batch. Defaults to 100.
+
+    Returns:
+        list of float: A list of calculated credits for each message, rounded to two decimal places.
+    """
     def process_message_batch(batch):
         return calculate_credits_pytorch(batch)
 

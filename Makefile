@@ -15,6 +15,11 @@ perf:
 	@echo "Running performance comparison..."
 	PYTHONPATH=$$PYTHONPATH:src/ uv run python tests/compare_performance.py
 
+# Run the FastAPI application
+run:
+	@echo "Starting FastAPI application..."
+	PYTHONPATH=$$PYTHONPATH:src/ uv run uvicorn src.app:app --reload --host 0.0.0.0 --port 8000
+
 # Clean up cache files
 clean:
 	@echo "Cleaning up cache files..."
